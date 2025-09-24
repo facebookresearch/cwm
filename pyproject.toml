@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cwm"
+version = "0.0.1"
+description = "CWM Codebase"
+authors = [
+  { name = "Meta FAIR CodeGen team" },
+]
+requires-python = ">= 3.11"
+
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.mypy]
+ignore_missing_imports = true
+exclude = ['^tests/test_*\.py$', '^cwm/**/test*\.py$']
+disable_error_code = 'attr-defined'
+
+[tool.ruff]
+exclude = [
+  "cwm/exec/code/eval/runners",
+  "tests",
+  "cwm/**/test_*",
+]
+
+[tool.ruff.lint]
+select = [
+  # Default rules
+  "E4", "E7", "E9", "F",
+  # Function arguments should annotate types
+  "ANN001",
+  # Public function should annotate return type
+  "ANN201",
+  # Common bugs
+  "B",
+  # Timezone issues
+  "DTZ",
+  # Sort inputs
+  "I",
+  # Common errors
+  "PLE",
+  # Remove unused noqa
+  "RUF100",
+  # Modern syntax
+  "UP",
+]
+
+[tool.pytest.ini_options]
+addopts = ["--ignore=users"]
+pythonpath = [
+  "."
+]

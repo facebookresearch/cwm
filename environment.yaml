@@ -1,0 +1,48 @@
+channels:
+  - nodefaults
+dependencies:
+  - cuda-toolkit=12.4.1[channel=nvidia/label/cuda-12.4.1]
+  - conda-forge::bubblewrap=0.8.0
+  - conda-forge::cmake=3.28.2
+  - conda-forge::gxx=13  # for compiling torch extensions
+  - conda-forge::ninja=1.10.02
+  - conda-forge::openjdk=21  # for omegaconf from source
+  - python=3.11
+  - pip
+  - pip:
+    - -r requirements.txt
+variables:
+  # CUBLAS_WORKSPACE_CONFIG is required for determinism.
+  # Mode :4096:8 will increase GPU memory usage by approximately 24MiB.
+  # See https://docs.nvidia.com/cuda/cublas/index.html#results-reproducibility
+  CUBLAS_WORKSPACE_CONFIG: :4096:8
+
+  # MKL and OpenMP are used by PyTorch to accelerate CPU operators but they
+  # use thread pools for parallelization. With multiple processes per node
+  # this creates contention. We don't use CPU ops hence we limit these pools.
+  MKL_NUM_THREADS: 1
+  OMP_NUM_THREADS: 1
+
+  # It's very useful to have NCCL init info for debugging, let's always enable it
+  NCCL_DEBUG: INFO
+
+  # Set NCCL's timeout for individual atomic InfiniBand operations to ~17s
+  # (i.e., 4.096us * 2 ** 22). This can avoid NCCL failures on large jobs.
+  # See https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/env.html#nccl-ib-timeout
+  NCCL_IB_TIMEOUT: 22
+
+  # Make PyTorch tear down the entire process upon an asynchronous NCCL error
+  # See https://github.com/pytorch/pytorch/blob/69301fb/torch/csrc/distributed/c10d/ProcessGroupNCCL.hpp#L146-L158
+  TORCH_NCCL_ASYNC_ERROR_HANDLING: 1
+
+  # PyTorch's caching allocator for CUDA can be told to delay recycling a
+  # tensor until all the kernels using it on background streams are complete.
+  # This is safer but makes memory usage less deterministic (as it depends on
+  # how much faster the CPU is wrt the GPU). It can use more memory or cause
+  # fragmentation. For NCCL we can deactivate it _if_ we wait on a tensor
+  # before we deallocate it, which is nearly always the case.
+  TORCH_NCCL_AVOID_RECORD_STREAMS: 1
+
+  # Hard-code Modal image builder version. We require 2025.06 for RL
+  # environments.
+  MODAL_IMAGE_BUILDER_VERSION: "2025.06"

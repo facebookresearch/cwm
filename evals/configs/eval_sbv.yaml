@@ -1,0 +1,26 @@
+# Adjust as needed. This value is per rank. A larger value means higher throughput but also higher latency.
+# Also, higher value means more parallel sandboxes. Make sure num_rollout_threads x num_ranks
+# fits your modal account limits.
+num_rollout_threads: 10
+dump_mode: minimal
+
+gen_args:
+  use_sampling: true
+  vocab_parallel: true
+  loss_parallel: true
+  temperature: 1.0
+  top_p: 0.95
+  max_batch: 128
+  # This value is set for 80GB GPU memory and needs to be adjusted for other memory sizes
+  max_seq: 332800
+  host_cache_gb: 20
+  tp_size: 2
+
+tasks:
+  - env_config: swerl_tool_env:think_tag:modal:eval
+    reward_fn: similarities
+    path: {{eval_data_path}}
+    samples_per_prompt: 1
+    metrics_spec:
+      pass:
+        - "@1"

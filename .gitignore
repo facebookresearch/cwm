@@ -1,0 +1,66 @@
+*~
+*.swp
+
+# byte-compiled / optimized / DLL files
+__pycache__
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# macOS dir files
+.DS_Store
+
+# distribution / packaging
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.ipynb_checkpoints
+uv.lock
+
+# tests and linter
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.hypothesis/
+
+# dotenv
+.env
+.envrc
+
+# outcome of pytest-cov
+result.json
+
+# virtualenv
+.venv
+venv/
+ENV/
+
+# documentation
+docs/_build
+docs/_sources
+
+# editor settings
+.vscode
+
+# diff resolution results
+*.orig
+
+# Ultimate logs
+Ultimate.log
+UltimateCounterExample.errorpath

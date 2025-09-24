@@ -1,0 +1,23 @@
+num_rollout_threads: 16
+dump_mode: minimal
+
+gen_args:
+  vocab_parallel: true
+  loss_parallel: true
+  use_sampling: true
+  temperature: 1.0
+  top_p: 0.95
+  max_batch: 128
+  # This value is set for 80GB GPU memory and needs to be adjusted for other memory sizes
+  max_seq: 332800
+  tp_size: 2
+  host_cache_gb: 20
+
+tasks:
+- env_config: math_cwmthinktag_env:64k
+  reward_fn: pass_only
+  path: {{eval_data_path}}
+  samples_per_prompt: 20
+  metrics_spec:
+    pass:
+    - '@1'

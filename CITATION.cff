@@ -1,0 +1,16 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Meta"
+  given-names: "FAIR CodeGen Team"
+title: "CWM: An Open-Weights LLM for Research on Code Generation with World Models"
+date-released: 2025-09-24
+url: "https://ai.meta.com/research/publications/cwm/"
+preferred-citation:
+  type: report
+  authors:
+  - family-names: "Meta"
+    given-names: "FAIR CodeGen Team"
+  title: "CWM: An Open-Weights LLM for Research on Code Generation with World Models"
+  date-released: 2025-09-24
+  url: "https://ai.meta.com/research/publications/cwm/"

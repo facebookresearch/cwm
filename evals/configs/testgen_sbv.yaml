@@ -1,0 +1,26 @@
+num_rollout_threads: 10
+dump_mode: minimal
+
+gen_args:
+  use_sampling: true
+  vocab_parallel: true
+  loss_parallel: true
+  temperature: 1.0
+  top_p: 0.95
+  max_batch: 128
+  max_seq: 262144
+  host_cache_gb: 20
+  tp_size: 2
+
+tasks:
+  - env_config: swerl_testgen_tool_env:think_tag:modal:eval
+    reward_fn: pass_only
+    path: {{eval_data_path}}
+    # We generate 40 in the paper. 1 for quick testing.
+    samples_per_prompt: 1
+    metrics_spec:
+      pass:
+        - "@1"
+
+tokenizer:
+  name: cwm_instruct

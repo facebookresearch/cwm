@@ -1,0 +1,26 @@
+antlr4-python3-runtime==4.11.0
+blobfile
+datasets==3.6.0  # for downloading eval datasets
+dill
+docker
+flask==3.1.1
+google-re2==1.1.20240702
+ipython==8.33.0
+jupyter
+math-verify[antlr4_11_0]
+modal>=1.1.0
+moodist==0.5.1
+msgspec
+ninja
+numpy
+omegaconf @ git+https://github.com/omry/omegaconf.git@117f7de07285e4d1324b9229eaf873de15279457  # to enable a recent antlr version
+openai==1.86.0
+rich
+swebench
+tenacity
+tiktoken
+torch==2.7.1
+unidiff
+universal_pathlib
+xformers==0.0.31.post1
+xxhash
