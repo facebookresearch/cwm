@@ -6,11 +6,15 @@ import subprocess
 from typing import Optional, List
 import sys
 
-if sys.version_info >= (3, 9):
-    from typing import TypedDict, Literal  # Python 3.9+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict, Literal  # Python 3.8+
 else:
     from typing_extensions import TypedDict, Literal
 
+if sys.version_info >= (3, 8):
+    AsyncTimeoutError = asyncio.exceptions.TimeoutError
+else:
+    AsyncTimeoutError = TimeoutError
 
 class SessionOutput(TypedDict):
     status: Literal["success", "error"]
@@ -180,7 +184,7 @@ class AsyncSession:
             output = SessionOutput(
                 status="success", output=read_output, error_type="none"
             )
-        except TimeoutError:
+        except (TimeoutError, AsyncTimeoutError):
             read_output = self._tmp_buffer.decode(errors="ignore")
             assert self.proc is not None
             if self.proc.returncode is not None:

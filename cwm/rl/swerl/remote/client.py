@@ -11,10 +11,13 @@ import sys
 
 if sys.version_info >= (3, 9):
     from collections.abc import Callable
-    from typing import TypedDict  # Python 3.9+
 else:
     from typing import Callable
-    from typing_extensions import TypedDict  # Python 3.8
+
+if sys.version_info >= (3, 8):
+    from typing import TypedDict
+else:
+    from typing_extensions import TypedDict
 
 from pathlib import Path
 from typing import Any, Optional, List, Tuple
