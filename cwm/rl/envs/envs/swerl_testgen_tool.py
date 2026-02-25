@@ -70,7 +70,7 @@ def test__rules__std_L060_raised() -> None:
             NVL(NULL,100);"
         result = lint(sql, rules=["L060"])
         assert len(result) == 2
-    except:
+    except Exception:
         print("Other issues")
         return
 
