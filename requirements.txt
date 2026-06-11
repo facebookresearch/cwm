@@ -19,7 +19,7 @@ rich
 swebench
 tenacity
 tiktoken
-torch==2.7.1
+torch==2.12.0
 unidiff
 universal_pathlib
 xformers==0.0.31.post1
