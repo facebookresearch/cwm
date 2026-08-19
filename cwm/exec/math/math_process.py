@@ -21,12 +21,25 @@ class TimeoutException(Exception):
 
 
 def run_with_timeout(func: Callable, timeout_sec: float, *args, **kwargs) -> Any:
-    with futures.ThreadPoolExecutor(max_workers=1) as executor:
-        future = executor.submit(func, *args, **kwargs)
-        try:
-            return future.result(timeout=timeout_sec)
-        except futures.TimeoutError:
-            raise
+    """Run ``func`` in a worker thread and raise on timeout.
+
+    If ``func`` does not finish within ``timeout_sec`` seconds, a
+    ``concurrent.futures.TimeoutError`` is raised. Note that Python threads
+    cannot be forcibly interrupted: a function that never returns keeps running
+    in the background, so the timeout only guarantees that this call returns
+    control to the caller promptly rather than blocking until ``func`` finishes.
+    """
+    executor = futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(func, *args, **kwargs)
+    try:
+        return future.result(timeout=timeout_sec)
+    finally:
+        # ``ThreadPoolExecutor.__exit__`` calls ``shutdown(wait=True)``, which
+        # would block here until a timed-out function finishes and defeat the
+        # purpose of the timeout. Shut down without waiting so the caller
+        # regains control promptly and the worker thread finishes in the
+        # background.
+        executor.shutdown(wait=False)
 
 
 # from minerva
